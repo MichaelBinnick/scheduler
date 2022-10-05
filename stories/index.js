@@ -10,6 +10,7 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+import Appointment from 'components/Appointment';
 
 storiesOf("Button", module)
   .addParameters({
@@ -101,7 +102,7 @@ storiesOf("InterviewerListItem", module)
       avatar={interviewer.avatar}
       setInterviewer={() => action("setInterviewer")(interviewer.id)}
     />
-  ));
+));
 
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
@@ -131,4 +132,16 @@ storiesOf("InterviewerList", module)
       interviewers={interviewers}
       onChange={action("setInterviewer")}
     />
-  ));
+));
+
+
+storiesOf("Appointment", module)
+    .addParameters({
+      backgrounds: [{ name: 'white', value: '#fff', default: true}]
+    })
+    .add("Appointment", () => (
+      <Appointment />
+    ))
+    .add("Appointment with Time", () => (
+      <Appointment time="12pm" />
+    ))
