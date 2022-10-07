@@ -31,3 +31,22 @@ export function getInterview(state, interview) {
   return modInterview;
 
 }
+
+export function getInterviewersForDay(state, day) {
+  
+  const filteredInterviewers = [];
+
+  const matchedDay = state.days.filter(dayOb => dayOb.name === day)[0];
+  
+  if (!matchedDay) {
+    return filteredInterviewers;
+  }
+  
+  matchedDay.interviewers.forEach(viewer => {
+    if (state.interviewers[viewer]) {
+      filteredInterviewers.push(state.interviewers[viewer]);
+    }
+  })
+
+  return filteredInterviewers;
+}
