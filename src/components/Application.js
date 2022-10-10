@@ -53,7 +53,6 @@ export default function Application(props) {
         })
 
       })
-      .catch(e => console.log(`updt appt err:`, e))
   }
 
   const cancelInterview = function(id) {
@@ -78,7 +77,6 @@ export default function Application(props) {
           appointments
         })
       })
-      .catch(e => console.log(`delete appmt err:`, e))
   }
 
   return (
