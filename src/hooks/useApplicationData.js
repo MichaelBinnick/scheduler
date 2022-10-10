@@ -54,16 +54,13 @@ export default function useApplicationData() {
     if (type === 'delete') {
       numOfSpots += 2;
     }
+
     console.log(`numOfSpots`, numOfSpots);
 
     const modifiedDaysArray = [...state.days];
     modifiedDaysArray[dayIndex].spots = numOfSpots;
 
-    setState(prev => ({
-      ...prev,
-      days: modifiedDaysArray
-    }))
-
+    return modifiedDaysArray;
   }
 
   const bookInterview = function(id, interview) {
@@ -79,11 +76,13 @@ export default function useApplicationData() {
     return axios.put(`/api/appointments/${id}`, appointment)
       .then((res) => {
         
+        const modifiedDaysArray = updateSpots();
+        
         setState({
           ...state,
-          appointments
-        })
-        updateSpots();
+          appointments,
+          days: modifiedDaysArray
+        });
         
       })
   }
@@ -104,13 +103,15 @@ export default function useApplicationData() {
     return axios.delete(`/api/appointments/${id}`)
       .then((res) => {
         console.log('axios delete res:', res);
+        
+        const modifiedDaysArray = updateSpots('delete');
 
         setState({
           ...state,
-          appointments
-        })
+          appointments,
+          days: modifiedDaysArray
+        });
 
-        updateSpots('delete');
       })
   }
 
