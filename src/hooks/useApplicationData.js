@@ -27,6 +27,45 @@ export default function useApplicationData() {
     }).catch(e => console.log(e));
   }, [])
 
+  const updateSpots = (type) => {
+
+    let dayIndex = 0;
+
+    if (state.day === 'Monday') {
+      dayIndex = 0;
+    } else if (state.day === 'Tuesday') {
+      dayIndex = 1;
+    } else if (state.day === 'Wednesday') {
+      dayIndex = 2;
+    } else if (state.day === 'Thursday') {
+      dayIndex = 3;
+    } else if (state.day === 'Friday') {
+      dayIndex = 4;
+    }
+
+    let numOfSpots = -1;
+
+    for (const appmt of state.days[dayIndex].appointments) {
+      if (!state.appointments[appmt].interview) {
+        numOfSpots++;
+      }
+    }
+
+    if (type === 'delete') {
+      numOfSpots += 2;
+    }
+    console.log(`numOfSpots`, numOfSpots);
+
+    const modifiedDaysArray = [...state.days];
+    modifiedDaysArray[dayIndex].spots = numOfSpots;
+
+    setState(prev => ({
+      ...prev,
+      days: modifiedDaysArray
+    }))
+
+  }
+
   const bookInterview = function(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -39,12 +78,13 @@ export default function useApplicationData() {
 
     return axios.put(`/api/appointments/${id}`, appointment)
       .then((res) => {
-      
+        
         setState({
           ...state,
           appointments
         })
-
+        updateSpots();
+        
       })
   }
 
@@ -69,6 +109,8 @@ export default function useApplicationData() {
           ...state,
           appointments
         })
+
+        updateSpots('delete');
       })
   }
 
