@@ -35,7 +35,6 @@ export default function Application(props) {
   const interviewers = getInterviewersForDay(state, state.day);
 
   const bookInterview = function(id, interview) {
-    console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: {...interview}
@@ -48,15 +47,38 @@ export default function Application(props) {
     return axios.put(`/api/appointments/${id}`, appointment)
       .then((res) => {
       
-        console.log('axios put response', res);
         setState({
           ...state,
           appointments
         })
 
       })
-      .catch(e => console.log(e))
+      .catch(e => console.log(`updt appt err:`, e))
+  }
 
+  const cancelInterview = function(id) {
+    console.log('cancel interview called, id', id);
+    
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+
+    return axios.delete(`/api/appointments/${id}`)
+      .then((res) => {
+        console.log('axios delete res:', res);
+
+        setState({
+          ...state,
+          appointments
+        })
+      })
+      .catch(e => console.log(`delete appmt err:`, e))
   }
 
   return (
@@ -83,7 +105,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {getAppointmentsForDay(state, state.day).map(appointment => {
-          return <Appointment {...appointment} key={appointment.id} interview={getInterview(state, appointment.interview)} interviewers={interviewers} bookInterview={bookInterview} />
+          return <Appointment {...appointment} key={appointment.id} interview={getInterview(state, appointment.interview)} interviewers={interviewers} bookInterview={bookInterview} cancelInterview={cancelInterview} />
         })}
         <Appointment key='last' time='5pm' />
       </section>
