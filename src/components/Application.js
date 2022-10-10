@@ -34,6 +34,22 @@ export default function Application(props) {
   
   const interviewers = getInterviewersForDay(state, state.day);
 
+  const bookInterview = function(id, interview) {
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: {...interview}
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    setState({
+      ...state,
+      appointments
+    })
+  }
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -58,7 +74,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {getAppointmentsForDay(state, state.day).map(appointment => {
-          return <Appointment {...appointment} key={appointment.id}interview={getInterview(state, appointment.interview)} interviewers={interviewers} />
+          return <Appointment {...appointment} key={appointment.id} interview={getInterview(state, appointment.interview)} interviewers={interviewers} bookInterview={bookInterview} />
         })}
         <Appointment key='last' time='5pm' />
       </section>
