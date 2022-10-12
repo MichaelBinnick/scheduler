@@ -55,8 +55,6 @@ export default function useApplicationData() {
       numOfSpots += 2;
     }
 
-    console.log(`numOfSpots`, numOfSpots);
-
     const modifiedDaysArray = [...state.days];
     modifiedDaysArray[dayIndex].spots = numOfSpots;
 

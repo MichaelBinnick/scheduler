@@ -47,7 +47,7 @@ describe("Appointments", () => {
       .click({force: true});
 
     cy.contains("Confirm")  
-      .click()
+      .click();
 
     cy.contains("Deleting...")
       .should("exist");
